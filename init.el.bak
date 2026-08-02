@@ -1,0 +1,444 @@
+;;; init.el --- Emacs Configuration -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;; Personal Emacs configuration file.
+
+;;; Code:
+
+;; ==========================================
+;; 1. PACKAGE MANAGEMENT & HTTPS
+;; ==========================================
+(require 'package)
+(require 'warnings)
+
+(setq package-archives '(("melpa"  . "https://melpa.org/packages/")
+                         ("gnu"    . "https://elpa.gnu.org/packages/")
+                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+(setq use-package-always-ensure t)
+
+;; Suppress byte-compiler warnings window on startup
+(setq warning-minimum-level :error)
+
+;; ==========================================
+;; 2. UI & BASIC SETTINGS
+;; ==========================================
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(setq inhibit-startup-screen t)
+(global-display-line-numbers-mode t)
+(electric-pair-mode 1)
+(setq make-backup-files nil)
+(setq create-lockfiles nil)
+
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t)
+  (load-theme 'doom-one t))
+  (doom-themes-org-config)
+
+(set-face-attribute 'default nil
+                    :font "JetBrainsMono Nerd Font Mono"
+                    :height 120
+                    :weight 'medium)
+
+;; Enable mouse support in terminal
+(xterm-mouse-mode 1)
+(setq scroll-margin 5
+      scroll-conservatively 101
+      scroll-step 3)
+
+;; Colorize nested parenthesis
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+(setq native-comp-async-report-warnings-errors 'silent)
+
+;; ==========================================
+;; 3. COMPLETION ENGINE (VERTICO + CONSULT)
+;; ==========================================
+(use-package vertico
+  :init
+  (vertico-mode 1)
+  :config
+  (setq vertico-cycle t))
+
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion)))))
+
+(use-package consult
+  :bind (("C-s" . consult-line)))
+
+(use-package marginalia
+  :init
+  (marginalia-mode 1))
+
+(use-package corfu
+  :init
+  (global-corfu-mode)
+  (corfu-popupinfo-mode)
+  :custom
+  (corfu-auto t)
+  (corfu-auto-prefix 1)
+  (corfu-auto-delay 0.0)
+  (corfu-cycle t)
+  (corfu-preview-current nil)
+  (corfu-preselect 'prompt)
+  :bind
+  (:map corfu-map
+        ("TAB" . corfu-next)
+        ([tab] . corfu-next)
+        ("S-TAB" . corfu-previous)
+        ([backtab] . corfu-previous)
+        ("RET" . corfu-insert)))
+
+(use-package cape
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file))
+
+(use-package kind-icon
+  :after corfu
+  :custom
+  (kind-icon-default-face 'corfu-default)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+;; ==========================================
+;; 4. PROJECT MANAGEMENT (PROJECTILE)
+;; ==========================================
+(use-package projectile
+  :init
+  (projectile-mode +1)
+  :config
+  (setq projectile-project-search-path '("~/dev" "~/projects")))
+
+;; Auto-create non-existent directories on save
+(add-hook 'before-save-hook
+          (lambda ()
+            (when buffer-file-name
+              (let ((dir (file-name-directory buffer-file-name)))
+                (unless (file-exists-p dir)
+                  (make-directory dir t))))))
+
+;; ==========================================
+;; 5. EVIL MODE & KEYBINDINGS
+;; ==========================================
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-vsplit-window-right t)
+  (setq evil-split-window-below t)
+  (setq evil-undo-system 'undo-redo)
+  :config
+  (evil-mode 1)
+  (mouse-wheel-mode 1)
+  (setq mouse-wheel-scroll-amount '(2 ((shift) . 1)))
+  (setq mouse-wheel-progressive-speed nil)
+  (setq mouse-drag-and-drop-region t)
+  (define-key evil-normal-state-map [down-mouse-1] 'mouse-drag-region)
+  (define-key evil-visual-state-map [down-mouse-1] 'mouse-drag-region))
+
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
+(use-package which-key
+  :config
+  (which-key-mode))
+
+;; Quick execution helper
+(defun my/run-current-file ()
+  "Execute current file using its extension."
+  (interactive)
+  (let* ((file-name (buffer-file-name))
+         (ext (file-name-extension file-name))
+         (cmd (pcase ext
+                ("py" (concat "python3 " file-name))
+                ("go" (concat "go run " file-name))
+                ("c"  (concat "gcc " file-name " -o out && ./out"))
+                ("cpp" (concat "g++ " file-name " -o out && ./out"))
+                (_ (read-string "Compile command: ")))))
+    (compile cmd)))
+
+(declare-function my-leader-def "general")
+
+(use-package general
+  :config
+  (general-evil-setup t)
+  
+  (general-create-definer my-leader-def
+    :states '(normal visual emacs)
+    :keymaps 'override
+    :prefix "SPC"
+    :global-prefix "C-SPC")
+
+  (my-leader-def
+    "f"  '(:ignore t :which-key "Files")
+    "ff" '(find-file :which-key "Find File")
+    "fr" '(consult-recent-file :which-key "Recent Files")
+    "fs" '(save-buffer :which-key "Save File")
+    
+    "b"  '(:ignore t :which-key "Buffers")
+    "bb" '(consult-buffer :which-key "Switch Buffer")
+    "bk" '(kill-current-buffer :which-key "Kill Buffer")
+    
+    "p"  '(:ignore t :which-key "Projects")
+    "pp" '(projectile-switch-project :which-key "Switch Project")
+    "pf" '(projectile-find-file :which-key "Find File in Project")
+    "ps" '(consult-ripgrep :which-key "Search Text in Project")
+
+    "g"  '(:ignore t :which-key "Git")
+    "gg" '(magit-status :which-key "Magit Status")
+    "gb" '(magit-blame :which-key "Magit Blame")
+
+    "c"  '(:ignore t :which-key "Code")
+    "cx" '(flycheck-list-errors :which-key "List errors")
+    "cn" '(flycheck-next-error :which-key "Next error")
+    "cp" '(flycheck-previous-error :which-key "Previous error")
+
+    "m"  '(:ignore t :which-key "Mode")
+    "mr" '(my/run-current-file :which-key "Run File")
+
+    "e"  '(:ignore t :which-key "Explorer")
+    "ee" '(treemacs :which-key "Toggle Treemacs")
+    "ef" '(treemacs-find-file :which-key "Find Current File in Tree")
+    
+    "o"  '(:ignore t :which-key "Org-mode")
+    "oa" '(org-agenda :which-key "Agenda")
+    "oc" '(org-capture :which-key "Capture")
+    
+    "d"  '(:ignore t :which-key "Dired")
+    "dd" '(dired :which-key "Open Dired")
+    "dj" '(dired-jump :which-key "Jump to Current Directory")
+
+    "s"  '(:ignore t :which-key "Search")
+    "ss" '(consult-line :which-key "Search in Buffer")))
+
+;; ==========================================
+;; 6. MAGIT (GIT INTEGRATION)
+;; ==========================================
+(use-package magit
+  :commands magit-status)
+
+;; ==========================================
+;; 7. LSP, FLYCHECK & IDE CAPABILITIES
+;; ==========================================
+(use-package flycheck
+  :init (global-flycheck-mode))
+
+;; (declare-function lsp-enable-which-key-integration "lsp-mode")
+;; (declare-function lsp-format-buffer "lsp-mode")
+;; (declare-function lsp-organize-imports "lsp-mode")
+
+;; (use-package lsp-mode
+;;   :hook ((go-ts-mode python-ts-mode c-ts-mode c++-ts-mode) . lsp-deferred)
+;;   :commands (lsp lsp-deferred)
+;;   :config
+;;   (setq lsp-auto-guess-root t)
+;;   (setq lsp-keymap-prefix "C-c l")
+;;   (setq lsp-enable-file-watchers nil)
+;;   (lsp-enable-which-key-integration t))
+
+;; (use-package lsp-ui
+;;   :commands lsp-ui-mode
+;;   :config
+;;   (setq lsp-ui-doc-enable t)
+;;   (setq lsp-ui-doc-position 'at-point))
+
+;; ==========================================
+;; 8. TREEMACS
+;; ==========================================
+(declare-function treemacs-follow-mode "treemacs-follow-mode")
+(declare-function treemacs-filewatch-mode "treemacs-filewatch-mode")
+(declare-function treemacs-project-follow-mode "treemacs-project-follow-mode")
+
+(use-package treemacs
+  :defer t
+  :config
+  (setq treemacs-width 30
+        treemacs-is-never-other-window t)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-project-follow-mode t))
+
+(use-package treemacs-projectile
+  :after (treemacs projectile))
+
+(use-package treemacs-evil
+  :after (treemacs evil))
+
+;; ==========================================
+;; 9. LANGUAGES
+;; ==========================================
+;; --- GO ---
+(use-package go-mode
+  :hook (go-mode . (lambda ()
+                     (add-hook 'before-save-hook #'lsp-format-buffer nil t)
+                     (add-hook 'before-save-hook #'lsp-organize-imports nil t))))
+
+;; --- PYTHON ---
+(use-package python
+  :ensure nil
+  :custom
+  (python-shell-interpreter "python3"))
+
+;; --- C / C++ ---
+(setq-default c-basic-offset 4)
+
+;; ==========================================
+;; 10. CLIPBOARD INTEGRATION (TERMINAL FALLBACK)
+;; ==========================================
+(unless (display-graphic-p)
+  (when (executable-find "xclip")
+    (defun my/xclip-copy (text)
+      (let ((coding-system-for-write 'utf-8))
+        (with-temp-buffer
+          (insert text)
+          (call-process-region (point-min) (point-max)
+                               "xclip" nil nil nil
+                               "-selection" "clipboard" "-silent"))))
+
+    (defun my/xclip-paste ()
+      (let ((coding-system-for-read 'utf-8)
+            (text (shell-command-to-string "xclip -selection clipboard -o")))
+        (unless (string-empty-p text)
+          text)))
+
+    (setq interprogram-cut-function 'my/xclip-copy)
+    (setq interprogram-paste-function 'my/xclip-paste)))
+
+;; ==========================================
+;; 11. ORG-MODE
+;; ==========================================
+(declare-function evil-org-set-key-theme "evil-org")
+(declare-function evil-org-agenda-set-keys "evil-org-agenda")
+
+(use-package org
+  :ensure nil
+  :config
+  (setq org-directory "~/org")
+  (setq org-agenda-files '("~/org/tasks.org"))
+  (setq org-log-done 'time)
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "IN-PROGRESS(i)" "|" "DONE(d)" "CANCELLED(c)"))))
+
+(use-package evil-org
+  :after org
+  :hook (org-mode . evil-org-mode)
+  :config
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme '(navigation insert textobjects additional calendar))))
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
+(use-package org-superstar
+  :after org
+  :hook (org-mode . org-superstar-mode))
+
+;; ==========================================
+;; 12. MODELINE & DIRED
+;; ==========================================
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-mode)
+  :custom
+  (doom-modeline-height 28)
+  (doom-modeline-bar-width 4)
+  (doom-modeline-icon t)
+  (doom-modeline-major-mode-icon t)
+  (doom-modeline-indent-info t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(flycheck-error-list-highlight ((t (:background "#1a1b26" :foreground "#a9b1d6"))))
+ '(header-line ((t (:background "#1a1b26" :foreground "#a9b1d6" :box nil))))
+ '(mode-line ((t (:background "#1a1b26" :foreground "#a9b1d6" :box nil))))
+ '(mode-line-inactive ((t (:background "#16161e" :foreground "#565f89" :box nil)))))
+
+(use-package dired
+  :ensure nil
+  :custom
+  (dired-listing-switches "-agho --group-directories-first")
+  :config
+  (add-hook 'dired-mode-hook 'auto-revert-mode))
+
+(use-package dired-open
+  :config
+  (setq dired-open-extensions '(("png" . "xdg-open")
+                                ("jpg" . "xdg-open")
+                                ("pdf" . "xdg-open"))))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(cape company consult corfu dired-open dirvish doom-modeline
+	  doom-themes embark evil-collection evil-org flycheck general
+	  go-mode kind-icon lsp-ui magit marginalia orderless
+	  org-superstar rainbow-delimiters treemacs-evil
+	  treemacs-projectile vertico yasnippet yasnippet-snippets)))
+
+;; ==========================================
+;; Backup & Auto-save Configuration
+;; ==========================================
+(setq backup-directory-alist
+      `((".*" . ,(expand-file-name "backups/" user-emacs-directory))))
+
+(setq auto-save-file-name-transforms
+      `((".*" ,(expand-file-name "auto-save/" user-emacs-directory) t)))
+
+(setq create-lockfiles nil)
+
+;; Save minibuffer history
+(savehist-mode 1)
+(setq history-length 1000)
+(setq savehist-additional-variables
+      '(kill-ring
+        search-ring
+        regexp-search-ring))
+
+(use-package recentf
+  :ensure nil
+  :init
+  (recentf-mode 1)
+  :config
+  (setq recentf-max-saved-items 500
+        recentf-auto-cleanup 'never))
+
+(global-set-key (kbd "C-x b") #'consult-buffer)
+(global-set-key (kbd "M-y") #'consult-yank-pop)
+(global-set-key (kbd "M-g g") #'consult-goto-line)
+
+(save-place-mode 1)
+
+(use-package embark
+  :bind
+  (("C-." . embark-act)
+   ("C-;" . embark-dwim)
+   ("C-h B" . embark-bindings)))
+
+(use-package embark-consult
+  :after (embark consult))
+
+(provide 'init)
+;;; init.el ends here
