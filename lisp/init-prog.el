@@ -27,6 +27,9 @@
 (use-package flycheck
   :init (global-flycheck-mode))
 
+(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+
 (use-package eglot
   :ensure nil
   :hook
@@ -35,6 +38,8 @@
    (c-ts-mode      . eglot-ensure)
    (c++-ts-mode    . eglot-ensure))
   :config
+  (setq eldoc-display-functions
+        '(eldoc-display-in-echo-area))
   (add-hook 'before-save-hook
             (lambda ()
               (when (bound-and-true-p eglot--managed-mode)

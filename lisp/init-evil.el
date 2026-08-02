@@ -16,6 +16,7 @@
   (setq mouse-drag-and-drop-region t)
   (define-key evil-normal-state-map [down-mouse-1] 'mouse-drag-region)
   (define-key evil-visual-state-map [down-mouse-1] 'mouse-drag-region))
+  (define-key evil-normal-state-map (kbd "K") #'eldoc-doc-buffer)
 
 (use-package evil-collection
   :after evil
@@ -31,20 +32,20 @@
   "Execute current file using its extension."
   (interactive)
   (let* ((file-name (buffer-file-name))
-         (ext (file-name-extension file-name))
-         (cmd (pcase ext
-                ("py" (concat "python3 " file-name))
-                ("go" (concat "go run " file-name))
-                ("c"  (concat "gcc " file-name " -o out && ./out"))
-                ("cpp" (concat "g++ " file-name " -o out && ./out"))
-                (_ (read-string "Compile command: ")))))
+	 (ext (file-name-extension file-name))
+	 (cmd (pcase ext
+		("py" (concat "python3 " file-name))
+		("go" (concat "go run " file-name))
+		("c"  (concat "gcc " file-name " -o out && ./out"))
+		("cpp" (concat "g++ " file-name " -o out && ./out"))
+		(_ (read-string "Compile command: ")))))
     (compile cmd)))
 
 ;; General.el для удобного объявления Leader-клавиш
 (use-package general
   :config
   (general-evil-setup t)
-  
+
   (general-create-definer my-leader-def
     :states '(normal visual emacs)
     :keymaps 'override
@@ -56,19 +57,24 @@
     "ff" '(find-file :which-key "Find File")
     "fr" '(consult-recent-file :which-key "Recent Files")
     "fs" '(save-buffer :which-key "Save File")
-    
+
     "b"  '(:ignore t :which-key "Buffers")
     "bb" '(consult-buffer :which-key "Switch Buffer")
     "bk" '(kill-current-buffer :which-key "Kill Buffer")
-    
+
     "p"  '(:ignore t :which-key "Projects")
-    "pp" '(projectile-switch-project :which-key "Switch Project")
-    "pf" '(projectile-find-file :which-key "Find File in Project")
-    "ps" '(consult-ripgrep :which-key "Search Text in Project")
+    "pp" '(project-switch-project :which-key "Switch Project")
+    "pf" '(project-find-file :which-key "Find File in Project")
+    "pb" '(project-switch-to-buffer :which-key "Project Buffer")
+    "ps" '(consult-ripgrep :which-key "Search Text (Ripgrep)")
+    "pk" '(project-kill-buffers :which-key "Kill Project Buffers")
 
     "g"  '(:ignore t :which-key "Git")
     "gg" '(magit-status :which-key "Magit Status")
     "gb" '(magit-blame :which-key "Magit Blame")
+    "gn" '(diff-hl-next-hunk :which-key "Next Change")
+    "gp" '(diff-hl-previous-hunk :which-key "Prev Change")
+    "gr" '(diff-hl-revert-hunk :which-key "Revert Change")
 
     "c"  '(:ignore t :which-key "Code")
     "cx" '(flycheck-list-errors :which-key "List errors")
@@ -81,11 +87,11 @@
     "e"  '(:ignore t :which-key "Explorer")
     "ee" '(treemacs :which-key "Toggle Treemacs")
     "ef" '(treemacs-find-file :which-key "Find Current File in Tree")
-    
+
     "o"  '(:ignore t :which-key "Org-mode")
     "oa" '(org-agenda :which-key "Agenda")
     "oc" '(org-capture :which-key "Capture")
-    
+
     "d"  '(:ignore t :which-key "Dired")
     "dd" '(dired :which-key "Open Dired")
     "dj" '(dired-jump :which-key "Jump to Current Directory")

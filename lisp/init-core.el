@@ -21,14 +21,20 @@
   :init (recentf-mode 1)
   :config
   (setq recentf-max-saved-items 500
-        recentf-auto-cleanup 'never))
+	recentf-auto-cleanup 'never))
+
+(add-hook 'prog-mode-hook
+	  (lambda ()
+	    (add-hook 'before-save-hook #'whitespace-cleanup nil t)))
 
 (add-hook 'before-save-hook
-          (lambda ()
-            (when buffer-file-name
-              (let ((dir (file-name-directory buffer-file-name)))
-                (unless (file-exists-p dir)
-                  (make-directory dir t))))))
+	  (lambda ()
+	    (when buffer-file-name
+	      (let ((dir (file-name-directory buffer-file-name)))
+		(unless (file-exists-p dir)
+		  (make-directory dir t))))))
+
+(setq tab-always-indent 'complete)
 
 (provide 'init-core)
 ;;; init-core.el ends here

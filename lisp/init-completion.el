@@ -15,9 +15,9 @@
 ;; Consult (Улучшенные C-s, переключение буферов и поиск)
 (use-package consult
   :bind (("C-s" . consult-line)
-         ("C-x b" . consult-buffer)
-         ("M-y" . consult-yank-pop)
-         ("M-g g" . consult-goto-line)))
+	 ("C-x b" . consult-buffer)
+	 ("M-y" . consult-yank-pop)
+	 ("M-g g" . consult-goto-line)))
 
 ;; Marginalia (Аннотации в минибуфере)
 (use-package marginalia
@@ -37,11 +37,13 @@
   (corfu-preselect 'prompt)
   :bind
   (:map corfu-map
-        ("TAB" . corfu-next)
-        ([tab] . corfu-next)
-        ("S-TAB" . corfu-previous)
-        ([backtab] . corfu-previous)
-        ("RET" . corfu-insert)))
+	("C-n" . corfu-next)
+	("C-p" . corfu-previous)
+	("TAB" . corfu-insert)
+	([tab] . corfu-insert)
+	("RET" . corfu-insert))
+  :config
+  (evil-make-overriding-map corfu-map 'insert))
 
 ;; Cape (Источники дополнений для Corfu)
 (use-package cape

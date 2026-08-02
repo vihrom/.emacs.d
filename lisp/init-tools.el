@@ -10,21 +10,16 @@
 (use-package magit
   :commands magit-status)
 
-;; Treemacs
-(use-package treemacs
-  :defer t
-  :config
-  (setq treemacs-width 30
-        treemacs-is-never-other-window t)
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t)
-  (treemacs-project-follow-mode t))
+;; Project.el
+(use-package project
+  :ensure nil ;; Встроен в Emacs
+  :custom
+  (project-vc-extra-root-markers '(".git" "go.mod" "Cargo.toml" "package.json")))
+  (project-switch-commands '((project-find-file "Find file" ?f))))
 
-(use-package treemacs-projectile
-  :after (treemacs projectile))
-
-(use-package treemacs-evil
-  :after (treemacs evil))
+(use-package consult-project-extra
+  :bind
+  (("C-x p f" . consult-project-extra-find)))
 
 ;; Dired
 (use-package dired
@@ -37,28 +32,40 @@
 (use-package dired-open
   :config
   (setq dired-open-extensions '(("png" . "xdg-open")
-                                ("jpg" . "xdg-open")
-                                ("pdf" . "xdg-open"))))
+				("jpg" . "xdg-open")
+				("pdf" . "xdg-open"))))
 
-;; Терминальный clipboard (xclip)
+;; Clipboard (xclip)
 (unless (display-graphic-p)
   (when (executable-find "xclip")
     (defun my/xclip-copy (text)
       (let ((coding-system-for-write 'utf-8))
-        (with-temp-buffer
-          (insert text)
-          (call-process-region (point-min) (point-max)
-                               "xclip" nil nil nil
-                               "-selection" "clipboard" "-silent"))))
+	(with-temp-buffer
+	  (insert text)
+	  (call-process-region (point-min) (point-max)
+			       "xclip" nil nil nil
+			       "-selection" "clipboard" "-silent"))))
 
     (defun my/xclip-paste ()
       (let ((coding-system-for-read 'utf-8)
-            (text (shell-command-to-string "xclip -selection clipboard -o")))
-        (unless (string-empty-p text)
-          text)))
+	    (text (shell-command-to-string "xclip -selection clipboard -o")))
+	(unless (string-empty-p text)
+	  text)))
 
     (setq interprogram-cut-function 'my/xclip-copy)
     (setq interprogram-paste-function 'my/xclip-paste)))
+
+;; GIT GUTTER / DIFF-HL (Подсветка изменений)
+(use-package diff-hl
+  :init
+  (global-diff-hl-mode)
+  (diff-hl-flydiff-mode)
+  :config
+  (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)
+
+  (unless (display-graphic-p)
+    (diff-hl-margin-mode)))
 
 (provide 'init-tools)
 ;;; init-tools.el ends here
