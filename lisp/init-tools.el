@@ -1,27 +1,29 @@
 ;;; init-tools.el --- External Tools -*- lexical-binding: t; -*-
 
-;; Projectile
-(use-package projectile
-  :init (projectile-mode +1)
-  :config
-  (setq projectile-project-search-path '("~/dev" "~/projects")))
+;; Project.el
+(use-package project
+  :ensure nil
+  :custom
+  (project-vc-extra-root-markers '(".git" "go.mod" "Cargo.toml" "package.json"))
+  (project-switch-commands '((project-find-file "Find file" ?f))))
 
-;; Magit
+;; 2. MAGIT
 (use-package magit
   :commands magit-status)
 
-;; Project.el
-(use-package project
-  :ensure nil ;; Встроен в Emacs
-  :custom
-  (project-vc-extra-root-markers '(".git" "go.mod" "Cargo.toml" "package.json")))
-  (project-switch-commands '((project-find-file "Find file" ?f))))
+;; 3. TREEMACS
+(use-package treemacs
+  :defer t
+  :config
+  (setq treemacs-width 30
+	treemacs-is-never-other-window nil)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t))
 
-(use-package consult-project-extra
-  :bind
-  (("C-x p f" . consult-project-extra-find)))
+(use-package treemacs-evil
+  :after (treemacs evil))
 
-;; Dired
+;; 4. DIRED
 (use-package dired
   :ensure nil
   :custom
@@ -55,17 +57,17 @@
     (setq interprogram-cut-function 'my/xclip-copy)
     (setq interprogram-paste-function 'my/xclip-paste)))
 
-;; GIT GUTTER / DIFF-HL (Подсветка изменений)
+;; 5. DIFF-HL (Подсветка изменений)
 (use-package diff-hl
+  :ensure t
   :init
-  (global-diff-hl-mode)
-  (diff-hl-flydiff-mode)
+  (global-diff-hl-mode 1)
+  (diff-hl-flydiff-mode 1)
   :config
-  (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
-  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)
-
   (unless (display-graphic-p)
-    (diff-hl-margin-mode)))
+    (diff-hl-margin-mode 1))
+  (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
 (provide 'init-tools)
 ;;; init-tools.el ends here

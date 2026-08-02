@@ -43,13 +43,14 @@
 	([tab] . corfu-insert)
 	("RET" . corfu-insert))
   :config
-  (evil-make-overriding-map corfu-map 'insert))
+  (with-eval-after-load 'evil
+    (evil-make-overriding-map corfu-map 'insert)))
 
 ;; Cape (Источники дополнений для Corfu)
 (use-package cape
   :init
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file))
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev 'append)
+  (add-to-list 'completion-at-point-functions #'cape-file 'append))
 
 ;; Иконки для Corfu
 (use-package kind-icon

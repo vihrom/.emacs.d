@@ -24,8 +24,24 @@
   (evil-collection-init))
 
 (use-package which-key
+  :init
+  (which-key-mode 1)
+  :custom
+  (which-key-popup-type 'side-window)
+  (which-key-side-window-location 'bottom)
+  (which-key-side-window-max-height 0.25)
+
+  (which-key-separator " ➜ ")
+  (which-key-prefix-prefix "+")
+  (which-key-max-description-length 32)
+  (which-key-add-column-padding 2)
+  (which-key-max-display-columns nil)
+
+  (which-key-sort-order 'which-key-key-order-alpha)
+  (which-key-idle-delay 0.2)
+
   :config
-  (which-key-mode))
+  (which-key-setup-side-window-bottom))
 
 ;; Функция быстрого запуска текущего файла
 (defun my/run-current-file ()
@@ -77,9 +93,8 @@
     "gr" '(diff-hl-revert-hunk :which-key "Revert Change")
 
     "c"  '(:ignore t :which-key "Code")
-    "cx" '(flycheck-list-errors :which-key "List errors")
-    "cn" '(flycheck-next-error :which-key "Next error")
-    "cp" '(flycheck-previous-error :which-key "Previous error")
+    "cx" '(consult-flymake :which-key "List Errors")
+    "cl" '(flymake-show-buffer-diagnostics :which-key "Show Diagnostics Buffer")
 
     "m"  '(:ignore t :which-key "Mode")
     "mr" '(my/run-current-file :which-key "Run File")
