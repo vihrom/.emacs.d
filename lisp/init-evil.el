@@ -7,6 +7,7 @@
   (setq evil-want-C-u-scroll t)
   (setq evil-vsplit-window-right t)
   (setq evil-split-window-below t)
+  (setq evil-want-C-i-jump nil)
   (setq evil-undo-system 'undo-redo)
   :config
   (evil-mode 1)
@@ -15,8 +16,8 @@
   (setq mouse-wheel-progressive-speed nil)
   (setq mouse-drag-and-drop-region t)
   (define-key evil-normal-state-map [down-mouse-1] 'mouse-drag-region)
-  (define-key evil-visual-state-map [down-mouse-1] 'mouse-drag-region))
-  (define-key evil-normal-state-map (kbd "K") #'eldoc-doc-buffer)
+  (define-key evil-visual-state-map [down-mouse-1] 'mouse-drag-region)
+  (define-key evil-normal-state-map (kbd "K") #'eldoc))
 
 (use-package evil-collection
   :after evil
@@ -43,7 +44,6 @@
   :config
   (which-key-setup-side-window-bottom))
 
-;; Функция быстрого запуска текущего файла
 (defun my/run-current-file ()
   "Execute current file using its extension."
   (interactive)
@@ -57,7 +57,7 @@
 		(_ (read-string "Compile command: ")))))
     (compile cmd)))
 
-;; General.el для удобного объявления Leader-клавиш
+;; General.el
 (use-package general
   :config
   (general-evil-setup t)

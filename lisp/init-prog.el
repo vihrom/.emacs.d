@@ -1,6 +1,6 @@
 ;;; init-prog.el --- Programming languages, Treesitter & LSP -*- lexical-binding: t; -*-
 
-;; 1. TREESITTER CONFIGURATION
+;; TREESITTER CONFIGURATION
 (use-package treesit
   :ensure nil
   :config
@@ -23,8 +23,7 @@
   :config
   (global-treesit-auto-mode))
 
-;; 2. LSP (EGLOT)
-;; Встроенный Flymake + Eglot
+;; LSP (EGLOT)
 (use-package flymake
   :ensure nil
   :hook (prog-mode . flymake-mode)
@@ -49,7 +48,7 @@
 	    (lambda ()
 	      (add-hook 'before-save-hook #'eglot-format-buffer nil t))))
 
-;; 3. LANGUAGE SPECIFICS
+;; LANGUAGE SPECIFICS
 ;; Go
 (use-package go-ts-mode
   :ensure nil

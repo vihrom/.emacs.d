@@ -7,23 +7,23 @@
   (project-vc-extra-root-markers '(".git" "go.mod" "Cargo.toml" "package.json"))
   (project-switch-commands '((project-find-file "Find file" ?f))))
 
-;; 2. MAGIT
+;; MAGIT
 (use-package magit
   :commands magit-status)
 
-;; 3. TREEMACS
+;; TREEMACS
 (use-package treemacs
   :defer t
   :config
   (setq treemacs-width 30
 	treemacs-is-never-other-window nil)
-  (treemacs-follow-mode t)
+  (treemacs-project-follow-mode t)
   (treemacs-filewatch-mode t))
 
 (use-package treemacs-evil
   :after (treemacs evil))
 
-;; 4. DIRED
+;; DIRED
 (use-package dired
   :ensure nil
   :custom
@@ -57,7 +57,7 @@
     (setq interprogram-cut-function 'my/xclip-copy)
     (setq interprogram-paste-function 'my/xclip-paste)))
 
-;; 5. DIFF-HL (Подсветка изменений)
+;; DIFF-HL
 (use-package diff-hl
   :ensure t
   :init
@@ -68,6 +68,12 @@
     (diff-hl-margin-mode 1))
   (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
+
+(use-package undo-fu-session
+  :ensure t
+  :config
+  (global-undo-fu-session-mode)
+  (setq undo-fu-session-linear-limit 1000))
 
 (provide 'init-tools)
 ;;; init-tools.el ends here
