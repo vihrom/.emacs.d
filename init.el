@@ -5,8 +5,8 @@
 ;; Настройка package.el
 (require 'package)
 (setq package-archives '(("melpa"   . "https://melpa.org/packages/")
-                         ("gnu"     . "https://elpa.gnu.org/packages/")
-                         ("nongnu"  . "https://elpa.nongnu.org/nongnu/")))
+			 ("gnu"     . "https://elpa.gnu.org/packages/")
+			 ("nongnu"  . "https://elpa.nongnu.org/nongnu/")))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -28,6 +28,7 @@
 (require 'init-tools)
 (require 'init-prog)
 (require 'init-org)
+(require 'mail-config)
 
 (provide 'init)
 ;;; init.el ends here

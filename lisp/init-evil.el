@@ -1,5 +1,8 @@
 ;;; init-evil.el --- Evil mode & Keybindings -*- lexical-binding: t; -*-
 
+(use-package undo-fu
+  :ensure t)
+
 (use-package evil
   :init
   (setq evil-want-integration t)
@@ -8,7 +11,7 @@
   (setq evil-vsplit-window-right t)
   (setq evil-split-window-below t)
   (setq evil-want-C-i-jump nil)
-  (setq evil-undo-system 'undo-redo)
+  (setq evil-undo-system 'undo-fu)
   :config
   (evil-mode 1)
   (mouse-wheel-mode 1)
@@ -106,6 +109,8 @@
     "o"  '(:ignore t :which-key "Org-mode")
     "oa" '(org-agenda :which-key "Agenda")
     "oc" '(org-capture :which-key "Capture")
+    "of" '((lambda () (interactive) (find-file (read-file-name "Find Org file: " "~/org/"))) :which-key "Find Org File")
+    "os" '((lambda () (interactive) (consult-ripgrep "~/org/")) :which-key "Search in Org")
 
     "d"  '(:ignore t :which-key "Dired")
     "dd" '(dired :which-key "Open Dired")
