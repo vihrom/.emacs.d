@@ -21,6 +21,8 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+(setq use-short-answers t)
+
 (require 'init-core)
 (require 'init-ui)
 (require 'init-completion)
