@@ -4,10 +4,15 @@
 (setq native-comp-async-report-warnings-errors 'silent)
 
 (setq make-backup-files t)
-(setq backup-directory-alist
-      `((".*" . ,(expand-file-name "backups/" user-emacs-directory))))
-(setq auto-save-file-name-transforms
-      `((".*" ,(expand-file-name "auto-save/" user-emacs-directory) t)))
+(let ((backup-dir (expand-file-name "backups/" user-emacs-directory))
+      (auto-save-dir (expand-file-name "auto-save/" user-emacs-directory)))
+
+  (unless (file-exists-p backup-dir) (make-directory backup-dir t))
+  (unless (file-exists-p auto-save-dir) (make-directory auto-save-dir t))
+
+  (setq backup-directory-alist `((".*" . ,backup-dir)))
+  (setq auto-save-file-name-transforms `((".*" ,auto-save-dir t))))
+
 (setq create-lockfiles nil)
 
 (savehist-mode 1)
@@ -23,10 +28,6 @@
   (setq recentf-max-saved-items 500
 	recentf-auto-cleanup 'never))
 
-(add-hook 'prog-mode-hook
-	  (lambda ()
-	    (add-hook 'before-save-hook #'whitespace-cleanup nil t)))
-
 (add-hook 'before-save-hook
 	  (lambda ()
 	    (when buffer-file-name
@@ -34,7 +35,7 @@
 		(unless (file-exists-p dir)
 		  (make-directory dir t))))))
 
-(setq tab-always-indent 'complete)
+(setq tab-always-indent nil)
 
 (provide 'init-core)
 ;;; init-core.el ends here

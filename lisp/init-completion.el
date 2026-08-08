@@ -39,8 +39,8 @@
   (:map corfu-map
 	("C-n" . corfu-next)
 	("C-p" . corfu-previous)
-	("TAB" . corfu-insert)
-	([tab] . corfu-insert)
+	("TAB" . nil)
+	([tab] . nil)
 	("RET" . corfu-insert))
   :config
   (with-eval-after-load 'evil
