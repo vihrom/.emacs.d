@@ -29,7 +29,7 @@
   :hook (prog-mode . flymake-mode)
   :bind (:map flymake-mode-map
 	      ("M-n" . flymake-goto-next-error)
-	      ("M-p" . flymake-goto-previous-error)))
+	      ("M-p" . flymake-goto-prev-error)))
 
 (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
 (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
