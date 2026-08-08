@@ -20,7 +20,7 @@
   (setq mouse-drag-and-drop-region t)
   (define-key evil-normal-state-map [down-mouse-1] 'mouse-drag-region)
   (define-key evil-visual-state-map [down-mouse-1] 'mouse-drag-region)
-  (define-key evil-normal-state-map (kbd "K") #'eldoc))
+  (define-key evil-normal-state-map (kbd "K") #'eldoc-print-current-symbol-info)
 
 (use-package evil-collection
   :after evil

@@ -10,15 +10,15 @@
 
 ;; Шрифт
 (set-face-attribute 'default nil
-                    :font "JetBrainsMono Nerd Font Mono"
-                    :height 120
-                    :weight 'medium)
+		    :font "Iosevka Nerd Font Mono"
+		    :height 130
+		    :weight 'medium)
 
 (use-package doom-themes
   :config
   (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t)
-  (load-theme 'doom-one t)
+	doom-themes-enable-italic t)
+  (load-theme 'doom-gruvbox t)
   (doom-themes-org-config))
 
 (use-package doom-modeline

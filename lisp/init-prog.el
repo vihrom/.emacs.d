@@ -42,8 +42,6 @@
    (c-ts-mode      . eglot-ensure)
    (c++-ts-mode    . eglot-ensure))
   :config
-  (setq eldoc-display-functions
-	'(eldoc-display-in-echo-area))
   (add-hook 'eglot-managed-mode-hook
 	    (lambda ()
 	      (add-hook 'before-save-hook #'eglot-format-buffer nil t))))
