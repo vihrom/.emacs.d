@@ -1,6 +1,6 @@
 ;;; init-tools.el --- External Tools -*- lexical-binding: t; -*-
 
-;; Project.el
+;; PROJECT.EL
 (use-package project
   :ensure nil
   :custom
@@ -37,25 +37,10 @@
 				("jpg" . "xdg-open")
 				("pdf" . "xdg-open"))))
 
-;; Clipboard (xclip)
-(unless (display-graphic-p)
-  (when (executable-find "xclip")
-    (defun my/xclip-copy (text)
-      (let ((coding-system-for-write 'utf-8))
-	(with-temp-buffer
-	  (insert text)
-	  (call-process-region (point-min) (point-max)
-			       "xclip" nil nil nil
-			       "-selection" "clipboard" "-silent"))))
-
-    (defun my/xclip-paste ()
-      (let ((coding-system-for-read 'utf-8)
-	    (text (shell-command-to-string "xclip -selection clipboard -o")))
-	(unless (string-empty-p text)
-	  text)))
-
-    (setq interprogram-cut-function 'my/xclip-copy)
-    (setq interprogram-paste-function 'my/xclip-paste)))
+;; CLIPBOARD (xclip)
+(use-package xclip
+  :config
+  (xclip-mode 1))
 
 ;; DIFF-HL
 (use-package diff-hl
@@ -68,6 +53,7 @@
   (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
+;; UNDO-FU-SESSION
 (use-package undo-fu-session
   :config
   (global-undo-fu-session-mode)

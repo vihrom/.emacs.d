@@ -1,8 +1,10 @@
 ;;; init-core.el --- Core settings -*- lexical-binding: t; -*-
 
+;; WARNINGS & NOISE
 (setq warning-minimum-level :error)
 (setq native-comp-async-report-warnings-errors 'silent)
 
+;; BACKUPS & AUTO-SAVE
 (setq make-backup-files t)
 (let ((backup-dir (expand-file-name "backups/" user-emacs-directory))
       (auto-save-dir (expand-file-name "auto-save/" user-emacs-directory)))
@@ -15,12 +17,14 @@
 
 (setq create-lockfiles nil)
 
+;; HISTORY & PERSISTENCE
 (savehist-mode 1)
 (setq history-length 1000)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 
 (save-place-mode 1)
 
+;; RECENT FILES
 (use-package recentf
   :ensure nil
   :init (recentf-mode 1)
@@ -28,6 +32,7 @@
   (setq recentf-max-saved-items 200
 	recentf-auto-cleanup 'never))
 
+;; AUTOMATION
 (add-hook 'before-save-hook
 	  (lambda ()
 	    (when buffer-file-name
@@ -35,6 +40,7 @@
 		(unless (file-exists-p dir)
 		  (make-directory dir t))))))
 
+;; COMPLETION & INDENT
 (setq tab-always-indent 'complete)
 
 (provide 'init-core)

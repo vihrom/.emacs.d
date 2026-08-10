@@ -2,18 +2,24 @@
 
 (global-display-line-numbers-mode t)
 (electric-pair-mode 1)
-(xterm-mouse-mode 1)
 
+;; MOUSE
+(xterm-mouse-mode 1)
+(mouse-wheel-mode 1)
+(setq mouse-wheel-scroll-amount '(2 ((shift) . 1)))
+(setq mouse-wheel-progressive-speed nil)
+(setq mouse-drag-and-drop-region t)
 (setq scroll-margin 5
       scroll-conservatively 101
       scroll-step 3)
 
-;; Шрифт
+;; FONT
 (set-face-attribute 'default nil
 		    :font "Liberation Mono"
 		    :height 120
 		    :weight 'medium)
 
+;; THEME
 (use-package doom-themes
   :config
   (setq doom-themes-enable-bold t

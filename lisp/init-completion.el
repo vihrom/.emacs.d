@@ -1,29 +1,29 @@
 ;;; init-completion.el --- Completion Ecosystem -*- lexical-binding: t; -*-
 
-;; Vertico
+;; VERTICO
 (use-package vertico
   :init (vertico-mode 1)
   :custom (vertico-cycle t))
 
-;; Orderless
+;; ORDERLESS
 (use-package orderless
   :custom
   (completion-styles '(orderless basic))
   (completion-category-defaults nil)
   (completion-category-overrides '((file (styles partial-completion)))))
 
-;; Consult
+;; CONSULT
 (use-package consult
   :bind (("C-s" . consult-line)
 	 ("C-x b" . consult-buffer)
 	 ("M-y" . consult-yank-pop)
 	 ("M-g g" . consult-goto-line)))
 
-;; Marginalia
+;; MARGINALIA
 (use-package marginalia
   :init (marginalia-mode 1))
 
-;; Corfu
+;; CORFU
 (use-package corfu
   :init
   (global-corfu-mode)
@@ -49,14 +49,14 @@
   (with-eval-after-load 'evil
     (evil-make-overriding-map corfu-map 'insert)))
 
-;; Cape
+;; CAPE
 (use-package cape
   :init
   (add-hook 'completion-at-point-functions #'cape-dabbrev)
   (add-hook 'completion-at-point-functions #'cape-file)
   (add-hook 'completion-at-point-functions #'cape-elisp-block))
 
-;; Icons for Corfu
+;; ICONS FOR CORFU
 (use-package kind-icon
   :after corfu
   :custom
@@ -64,7 +64,7 @@
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
-;; Embark
+;; EMBARK
 (use-package embark
   :bind
   (("C-." . embark-act)

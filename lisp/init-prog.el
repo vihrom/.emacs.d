@@ -46,6 +46,10 @@
 	    (lambda ()
 	      (add-hook 'before-save-hook #'eglot-format-buffer nil t))))
 
+;; ELDOC
+(use-package eldoc
+  :ensure nil)
+
 ;; LANGUAGE SPECIFICS
 ;; Go
 (use-package go-ts-mode
@@ -60,6 +64,20 @@
 
 ;; C / C++
 (setq-default c-basic-offset 4)
+
+;; RUN FUNCTION
+(defun my/run-current-file ()
+  "Execute current file using its extension."
+  (interactive)
+  (let* ((file-name (buffer-file-name))
+         (ext (file-name-extension file-name))
+         (cmd (pcase ext
+                ("py" (concat "python3 " file-name))
+                ("go" (concat "go run " file-name))
+                ("c"  (concat "gcc " file-name " -o out && ./out"))
+                ("cpp" (concat "g++ " file-name " -o out && ./out"))
+                (_ (read-string "Compile command: ")))))
+    (compile cmd)))
 
 (provide 'init-prog)
 ;;; init-prog.el ends here
