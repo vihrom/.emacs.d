@@ -10,7 +10,7 @@
 
 ;; Шрифт
 (set-face-attribute 'default nil
-		    :font "Iosevka Nerd Font Mono"
+		    :font "Liberation Mono"
 		    :height 130
 		    :weight 'medium)
 

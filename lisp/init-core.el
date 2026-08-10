@@ -35,7 +35,7 @@
 		(unless (file-exists-p dir)
 		  (make-directory dir t))))))
 
-(setq tab-always-indent nil)
+(setq tab-always-indent 'complete)
 
 (provide 'init-core)
 ;;; init-core.el ends here

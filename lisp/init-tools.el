@@ -59,7 +59,6 @@
 
 ;; DIFF-HL
 (use-package diff-hl
-  :ensure t
   :init
   (global-diff-hl-mode 1)
   (diff-hl-flydiff-mode 1)
@@ -70,7 +69,6 @@
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
 (use-package undo-fu-session
-  :ensure t
   :config
   (global-undo-fu-session-mode)
   (setq undo-fu-session-linear-limit 1000))

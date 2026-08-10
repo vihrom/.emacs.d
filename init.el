@@ -30,7 +30,6 @@
 (require 'init-tools)
 (require 'init-prog)
 (require 'init-org)
-(require 'mail-config)
 
 (provide 'init)
 ;;; init.el ends here

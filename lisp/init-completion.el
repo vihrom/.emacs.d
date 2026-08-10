@@ -30,8 +30,8 @@
   (corfu-popupinfo-mode)
   :custom
   (corfu-auto t)
-  (corfu-auto-prefix 1)
-  (corfu-auto-delay 0.0)
+  (corfu-auto-prefix 2)
+  (corfu-auto-delay 0.1)
   (corfu-cycle t)
   (corfu-preview-current nil)
   (corfu-preselect 'prompt)
@@ -39,9 +39,12 @@
   (:map corfu-map
 	("C-n" . corfu-next)
 	("C-p" . corfu-previous)
-	("TAB" . nil)
-	([tab] . nil)
-	("RET" . corfu-insert))
+	("C-y" . corfu-insert)
+	("RET" . corfu-insert)
+        ("TAB" . corfu-next)
+        ([tab] . corfu-next)
+        ("S-TAB" . corfu-previous)
+        ([backtab] . corfu-previous))
   :config
   (with-eval-after-load 'evil
     (evil-make-overriding-map corfu-map 'insert)))
@@ -49,8 +52,9 @@
 ;; Cape (Источники дополнений для Corfu)
 (use-package cape
   :init
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev 'append)
-  (add-to-list 'completion-at-point-functions #'cape-file 'append))
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block))
 
 ;; Иконки для Corfu
 (use-package kind-icon
