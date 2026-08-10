@@ -12,7 +12,8 @@ auto-save-list/
 *~
 \#*\#
 .#*
-
+undo-fu-session/
+transient/
 .cache/
 eln-cache/
 etc/

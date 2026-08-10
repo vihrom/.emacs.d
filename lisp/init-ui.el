@@ -11,7 +11,7 @@
 ;; Шрифт
 (set-face-attribute 'default nil
 		    :font "Liberation Mono"
-		    :height 130
+		    :height 120
 		    :weight 'medium)
 
 (use-package doom-themes

@@ -25,7 +25,7 @@
   :ensure nil
   :init (recentf-mode 1)
   :config
-  (setq recentf-max-saved-items 500
+  (setq recentf-max-saved-items 200
 	recentf-auto-cleanup 'never))
 
 (add-hook 'before-save-hook
