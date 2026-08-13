@@ -31,9 +31,11 @@
   (dired-recursive-deletes 'top)
   (dired-recursive-copies 'always)
   (dired-kill-when-opening-new-buffers t)
+  (wdired-allow-to-change-permissions t)
   :config
   (evil-define-key 'normal dired-mode-map
     (kbd "l") 'dired-find-file
+    (kbd "R") 'wdired-change-to-wdired-mode
     (kbd "h") 'dired-up-directory))
 
 (use-package autorevert
