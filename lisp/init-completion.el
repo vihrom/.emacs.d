@@ -1,5 +1,11 @@
 ;;; init-completion.el --- Completion Ecosystem -*- lexical-binding: t; -*-
 
+;; YASNIPPET
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1))
+
 ;; VERTICO
 (use-package vertico
   :init (vertico-mode 1)

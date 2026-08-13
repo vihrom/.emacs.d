@@ -28,14 +28,33 @@
   :ensure nil
   :custom
   (dired-listing-switches "-agho --group-directories-first")
+  (dired-recursive-deletes 'top)
+  (dired-recursive-copies 'always)
+  (dired-kill-when-opening-new-buffers t)
   :config
-  (add-hook 'dired-mode-hook 'auto-revert-mode))
+  (evil-define-key 'normal dired-mode-map
+    (kbd "l") 'dired-find-file
+    (kbd "h") 'dired-up-directory))
+
+(use-package autorevert
+  :ensure nil
+  :init
+  (global-auto-revert-mode 1)
+  :custom
+  (global-auto-revert-non-file-buffers t)
+  (auto-revert-verbose nil))
+
+(use-package nerd-icons-dired
+  :ensure t
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
 
 (use-package dired-open
   :config
   (setq dired-open-extensions '(("png" . "xdg-open")
 				("jpg" . "xdg-open")
-				("pdf" . "xdg-open"))))
+				("pdf" . "xdg-open")))
+  (add-to-list 'dired-open-functions #'dired-open-by-extension))
 
 ;; CLIPBOARD (xclip)
 (use-package xclip

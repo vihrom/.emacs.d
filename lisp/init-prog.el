@@ -4,18 +4,6 @@
 (use-package treesit
   :ensure nil
   :config
-  (setq treesit-language-source-alist
-	'((bash       "https://github.com/tree-sitter/tree-sitter-bash")
-	  (c          "https://github.com/tree-sitter/tree-sitter-c")
-	  (cpp        "https://github.com/tree-sitter/tree-sitter-cpp")
-	  (go         "https://github.com/tree-sitter/tree-sitter-go")
-	  (gomod      "https://github.com/camdencheek/tree-sitter-go-mod")
-	  (json       "https://github.com/tree-sitter/tree-sitter-json")
-	  (make       "https://github.com/alemuller/tree-sitter-make")
-	  (markdown   "https://github.com/ikatyang/tree-sitter-markdown")
-	  (python     "https://github.com/tree-sitter/tree-sitter-python")
-	  (yaml       "https://github.com/ikatyang/tree-sitter-yaml")))
-
   (setq treesit-font-lock-level 4))
 
 (use-package treesit-auto
