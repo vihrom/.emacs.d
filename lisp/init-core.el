@@ -4,6 +4,9 @@
 (setq warning-minimum-level :error)
 (setq native-comp-async-report-warnings-errors 'silent)
 
+;; LSP OPTIMIZATION
+(setq read-process-output-max (* 1024 1024))
+
 ;; BACKUPS & AUTO-SAVE
 (setq make-backup-files t)
 (let ((backup-dir (expand-file-name "backups/" user-emacs-directory))
@@ -19,8 +22,8 @@
 
 ;; HISTORY & PERSISTENCE
 (savehist-mode 1)
-(setq history-length 1000)
-(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+(setq history-length 200)
+(setq savehist-additional-variables '(search-ring regexp-search-ring))
 
 (save-place-mode 1)
 
@@ -30,7 +33,7 @@
   :init (recentf-mode 1)
   :config
   (setq recentf-max-saved-items 200
-	recentf-auto-cleanup 'never))
+	recentf-auto-cleanup 'at-exit))
 
 ;; AUTOMATION
 (add-hook 'before-save-hook
@@ -42,6 +45,9 @@
 
 ;; COMPLETION & INDENT
 (setq tab-always-indent 'complete)
+
+;; GUI BOXS - off
+(setq use-dialog-box nil)
 
 (provide 'init-core)
 ;;; init-core.el ends here

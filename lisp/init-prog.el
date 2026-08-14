@@ -4,7 +4,7 @@
 (use-package treesit
   :ensure nil
   :config
-  (setq treesit-font-lock-level 4))
+  (setq treesit-font-lock-level 3))
 
 (use-package treesit-auto
   :demand t
@@ -30,13 +30,16 @@
    (c-ts-mode      . eglot-ensure)
    (c++-ts-mode    . eglot-ensure))
   :config
+  (setq eglot-events-buffer-size 0)
   (add-hook 'eglot-managed-mode-hook
 	    (lambda ()
 	      (add-hook 'before-save-hook #'eglot-format-buffer nil t))))
 
 ;; ELDOC
 (use-package eldoc
-  :ensure nil)
+  :ensure nil
+  :custom
+  (eldoc-idle-delay 0.5))
 
 ;; LANGUAGE SPECIFICS
 ;; Go

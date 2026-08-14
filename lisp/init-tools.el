@@ -18,7 +18,7 @@
   (setq treemacs-width 30
 	treemacs-is-never-other-window nil)
   (treemacs-project-follow-mode t)
-  (treemacs-filewatch-mode t))
+  (treemacs-filewatch-mode nil))
 
 (use-package treemacs-evil
   :after (treemacs evil))
@@ -26,11 +26,12 @@
 ;; DIRED
 (use-package dired
   :ensure nil
+  :defer t
   :custom
   (dired-listing-switches "-agho --group-directories-first")
   (dired-recursive-deletes 'top)
   (dired-recursive-copies 'always)
-  (dired-kill-when-opening-new-buffers t)
+  (dired-kill-when-opening-new-buffer t)
   (wdired-allow-to-change-permissions t)
   :config
   (evil-define-key 'normal dired-mode-map
@@ -67,7 +68,6 @@
 (use-package diff-hl
   :init
   (global-diff-hl-mode 1)
-  (diff-hl-flydiff-mode 1)
   :config
   (unless (display-graphic-p)
     (diff-hl-margin-mode 1))

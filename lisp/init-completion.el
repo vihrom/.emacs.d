@@ -37,7 +37,7 @@
   :custom
   (corfu-auto t)
   (corfu-auto-prefix 2)
-  (corfu-auto-delay 0.1)
+  (corfu-auto-delay 0.2)
   (corfu-cycle t)
   (corfu-preview-current nil)
   (corfu-preselect 'prompt)

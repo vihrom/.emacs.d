@@ -1,7 +1,13 @@
 ;;; init-ui.el --- UI Configurations -*- lexical-binding: t; -*-
 
 (global-display-line-numbers-mode t)
+(setq-default display-line-numbers-width 3)
+
 (electric-pair-mode 1)
+(setq font-lock-support-mode 'jit-lock-mode)
+
+(setq redisplay-skip-fontification-on-input t)
+
 
 ;; MOUSE
 (xterm-mouse-mode 1)
@@ -11,7 +17,7 @@
 (setq mouse-drag-and-drop-region t)
 (setq scroll-margin 5
       scroll-conservatively 101
-      scroll-step 3)
+      scroll-step 0)
 
 ;; FONT
 (set-face-attribute 'default nil
@@ -34,7 +40,7 @@
   (doom-modeline-bar-width 4)
   (doom-modeline-icon t)
   (doom-modeline-major-mode-icon t)
-  (doom-modeline-indent-info t))
+  (doom-modeline-indent-info nil))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
