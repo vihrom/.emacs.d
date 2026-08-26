@@ -1,5 +1,8 @@
 ;;; init-ui.el --- UI Configurations -*- lexical-binding: t; -*-
 
+;;; Commentary: Interface customization, themes, fonts, and modeline.
+
+;;; Code:
 (global-display-line-numbers-mode t)
 (setq-default display-line-numbers-width 3)
 

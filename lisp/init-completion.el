@@ -1,8 +1,10 @@
 ;;; init-completion.el --- Completion Ecosystem -*- lexical-binding: t; -*-
 
+;;; Commentary: Minibuffer completion framework and auto-complete setup.
+
+;;; Code:
 ;; YASNIPPET
 (use-package yasnippet
-  :ensure t
   :config
   (yas-global-mode 1))
 

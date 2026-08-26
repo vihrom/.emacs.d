@@ -1,5 +1,8 @@
 ;;; mail-config.el --- mu4e, msmtp  -*- lexical-binding: t; -*-
 
+;;; Commentary: Email client configuration and account credentials.
+
+;;; Code:
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 (require 'mu4e)
 

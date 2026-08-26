@@ -1,5 +1,8 @@
 ;;; early-init.el --- Early Initialization -*- lexical-binding: t; -*-
 
+;;; Commentary: Early startup optimizations.
+
+;;; Code:
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6)
 

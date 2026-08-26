@@ -1,5 +1,8 @@
 ;;; init.el --- Emacs Main Configuration -*- lexical-binding: t; -*-
 
+;;; Commentary: Main configuration entry point that loads all submodules.
+
+;;; Code:
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 (require 'package)
@@ -26,7 +29,7 @@
 (require 'init-prog)
 (require 'init-org)
 (require 'init-keybindings)
-(require 'mail-config)
+;; (require 'mail-config)
 
 (provide 'init)
 ;;; init.el ends here

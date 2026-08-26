@@ -1,5 +1,8 @@
 ;;; init-org.el --- Org Mode -*- lexical-binding: t; -*-
 
+;;; Commentary: Org-mode settings for notes, todo lists, and agenda.
+
+;;; Code:
 ;; ORG
 (use-package org
   :ensure nil

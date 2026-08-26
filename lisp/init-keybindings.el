@@ -1,5 +1,8 @@
 ;;; init-keybindings.el --- Global Keybindings & Leader Map -*- lexical-binding: t; -*-
 
+;;; Commentary: Global keymaps, custom shortcuts, and leader keys.
+
+;;; Code:
 ;; WHICH-KEY
 (use-package which-key
   :init

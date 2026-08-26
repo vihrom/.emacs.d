@@ -1,8 +1,17 @@
 ;;; init-evil.el --- Evil mode configuration -*- lexical-binding: t; -*-
 
+;;; Commentary: Vim modal editing emulation and key states.
+
+;;; Code:
 ;; UNDO-FU
-(use-package undo-fu
-  :ensure t)
+(use-package undo-fu)
+
+(use-package reverse-im
+  :demand t
+  :custom
+  (reverse-im-input-methods '("russian-computer"))
+  :config
+  (reverse-im-mode t))
 
 ;; EVIL
 (use-package evil

@@ -1,5 +1,8 @@
 ;;; init-core.el --- Core settings -*- lexical-binding: t; -*-
 
+;;; Commentary: Essential editor settings, backups, history, and auto-saves.
+
+;;; Code:
 ;; WARNINGS & NOISE
 (setq warning-minimum-level :error)
 (setq native-comp-async-report-warnings-errors 'silent)

@@ -1,5 +1,8 @@
 ;;; init-tools.el --- External Tools -*- lexical-binding: t; -*-
 
+;;; Commentary: External tools integration.
+
+;;; Code:
 ;; PROJECT.EL
 (use-package project
   :ensure nil

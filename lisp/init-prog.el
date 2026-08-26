@@ -1,10 +1,16 @@
 ;;; init-prog.el --- Programming languages, Treesitter & LSP -*- lexical-binding: t; -*-
 
+;;; Commentary: Programming language support, hooks, and syntax linting.
+
+;;; Code:
 ;; TREESITTER CONFIGURATION
 (use-package treesit
   :ensure nil
   :config
-  (setq treesit-font-lock-level 3))
+  (setq treesit-font-lock-level 3)
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode)))
+
 
 (use-package treesit-auto
   :demand t
@@ -19,8 +25,6 @@
 	      ("M-n" . flymake-goto-next-error)
 	      ("M-p" . flymake-goto-prev-error)))
 
-(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-(add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
 
 (use-package eglot
   :ensure nil
