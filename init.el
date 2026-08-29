@@ -29,7 +29,7 @@
 (require 'init-prog)
 (require 'init-org)
 (require 'init-keybindings)
-;; (require 'mail-config)
+(require 'mail-config)
 
 (provide 'init)
 ;;; init.el ends here

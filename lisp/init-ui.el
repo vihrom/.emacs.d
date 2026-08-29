@@ -11,16 +11,12 @@
 
 (setq redisplay-skip-fontification-on-input t)
 
-
 ;; MOUSE
 (xterm-mouse-mode 1)
 (mouse-wheel-mode 1)
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1)))
 (setq mouse-wheel-progressive-speed nil)
 (setq mouse-drag-and-drop-region t)
-(setq scroll-margin 5
-      scroll-conservatively 101
-      scroll-step 0)
 
 ;; FONT
 (set-face-attribute 'default nil

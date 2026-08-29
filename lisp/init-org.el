@@ -45,7 +45,11 @@
   :config
   (org-roam-db-autosync-mode))
 
-
+;; AUTO GIT
+(use-package git-auto-commit-mode
+  :init
+  (setq gac-automatically-push-p t)
+  :hook (org-mode . git-auto-commit-mode))
 
 (provide 'init-org)
 ;;; init-org.el ends here

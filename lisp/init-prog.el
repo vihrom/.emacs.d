@@ -7,10 +7,7 @@
 (use-package treesit
   :ensure nil
   :config
-  (setq treesit-font-lock-level 3)
-  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode)))
-
+  (setq treesit-font-lock-level 3))
 
 (use-package treesit-auto
   :demand t
@@ -25,14 +22,15 @@
 	      ("M-n" . flymake-goto-next-error)
 	      ("M-p" . flymake-goto-prev-error)))
 
-
 (use-package eglot
   :ensure nil
   :hook
   ((go-ts-mode     . eglot-ensure)
    (python-ts-mode . eglot-ensure)
    (c-ts-mode      . eglot-ensure)
-   (c++-ts-mode    . eglot-ensure))
+   (c++-ts-mode    . eglot-ensure)
+   (rust-ts-mode   . eglot-ensure)
+   (lua-ts-mode	   . eglot-ensure))
   :config
   (setq eglot-events-buffer-size 0)
   (add-hook 'eglot-managed-mode-hook
@@ -46,11 +44,6 @@
   (eldoc-idle-delay 0.5))
 
 ;; LANGUAGE SPECIFICS
-;; Go
-(use-package go-ts-mode
-  :ensure nil
-  :mode ("\\.go\\'" . go-ts-mode))
-
 ;; Python
 (use-package python
   :ensure nil
@@ -71,6 +64,7 @@
                 ("go" (concat "go run " file-name))
                 ("c"  (concat "gcc " file-name " -o out && ./out"))
                 ("cpp" (concat "g++ " file-name " -o out && ./out"))
+		("rs"  "cargo run")
                 (_ (read-string "Compile command: ")))))
     (compile cmd)))
 

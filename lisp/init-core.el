@@ -52,5 +52,12 @@
 ;; GUI BOXS - off
 (setq use-dialog-box nil)
 
+;; PATHS FOR SHELL
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x pgtk))
+  :config
+  (exec-path-from-shell-initialize))
+
+
 (provide 'init-core)
 ;;; init-core.el ends here
