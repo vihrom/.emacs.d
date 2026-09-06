@@ -20,7 +20,7 @@
 
 ;; FONT
 (set-face-attribute 'default nil
-		    :font "Liberation Mono"
+		    :font "JetBrainsMono Nerd Font Mono"
 		    :height 120
 		    :weight 'medium)
 
